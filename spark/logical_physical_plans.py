@@ -7,7 +7,6 @@ spark = SparkSession.builder\
             .appName("spark-execution-plan-demo")\
             .getOrCreate()
 
-
 persons = spark.createDataFrame([
                     (0, "person_1", 0, [100]),\
                     (1, "person_2", 1, [500, 250, 100]),\
@@ -20,11 +19,9 @@ graduate_programs = spark.createDataFrame([
                     (1, "Ph.D.", "EECS", "UC Berkeley")])\
                 .toDF("id", "degree", "department", "school")
                  
-
 join_result = persons.join(graduate_programs, \
             persons["graduate_program"] == graduate_programs["id"], "inner") \
             .orderBy("name")
-
 
 join_result.explain(mode="extended")            
 join_result.explain(mode="formatted")            
