@@ -12,15 +12,15 @@ df = spark.createDataFrame(
 df = df.repartition(4, "age")
 print(df.rdd.getNumPartitions())
 
-# Coalsce
+# Coalesce
+df = df.coalesce(2)
+print(df.rdd.getNumPartitions())
 
-
+# PartitionBy
 df.write.mode("overwrite").partitionBy("age").csv("data/output")
-
 
 # Bucketing 
 df.write.bucketBy(5, "age").saveAsTable("bucketed_table")
-
 
 df.write.bucketBy(10, "age")\
     .sortBy("name")\
