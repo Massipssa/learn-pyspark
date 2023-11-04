@@ -77,27 +77,39 @@ def rows():
 
 
 def df_transformations(df: DataFrame):
+    
     # add literal
     df.selectExpr("*", lit(1).alias("col_one"))
+    
     # add column
     df.withColumn("new_col", exp("col_1 == col_2"))
+    
     # rename a column
     df.withColumnRenamed("old_col", "new_col")
+    
     # escape reserved chars
     df.selectExpr("`the-name-col`")
+    
     # drop column or multiple columns
     df.drop("col_1", "col_2")
+    
     # cast column
     df.withColumn("col_1", col("cast_col_1").cast("long"))
+    
     # sort
     df.sort("col_1")
     df.orderBy(asc("col_1"), desc("col_2"))
+    
     # specify where nulls will appear
     df.orderBy(asc_nulls_first("col_1"), asc_nulls_last("col_2"))
     df.orderBy(desc_nulls_first("col_1"), desc_nulls_last("col_2"))
+    
+    # sort inside partition
     df.sortWithinPartitions("col_1")
+    
     # limit
     df.limit(5)
+    
     # partition and coalesce
     df.repartition(4)
     df.coalesce(5)
