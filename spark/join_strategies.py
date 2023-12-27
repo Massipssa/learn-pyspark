@@ -29,7 +29,6 @@ if __name__ == "__main__":
     sort_merge_join.explain(mode="formatted")
     sort_merge_join.show()
     
-
     ## BroadcastHashJoin
     broadcast_df = df_clients.hint('BROADCAST').join(df_orders, on='client_id', how='inner')
     broadcast_df.explain(mode="formatted")
