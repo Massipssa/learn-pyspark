@@ -24,32 +24,33 @@ if __name__ == "__main__":
     df_clients.printSchema()
     df_orders.printSchema()
 
-    # 
-    """
-    sort_merge_join = df_clients.join(df_orders, on='client_id', how='inner')
+    # SortMergeJoin
+    sort_merge_join = df_clients.hint("MERGE").join(df_orders, on='client_id', how='inner')
     sort_merge_join.explain(mode="formatted")
     sort_merge_join.show()
-    """
+    
 
-    ## Broadcast
-    """
-    broadcast_df = df_clients.hint('broadcast').join(df_orders, on='client_id', how='inner')
+    ## BroadcastHashJoin
+    broadcast_df = df_clients.hint('BROADCAST').join(df_orders, on='client_id', how='inner')
     broadcast_df.explain(mode="formatted")
     broadcast_df.show()
-    """
-
+    
     ## ShuffledHashJoin
-    """
     shuffle_hashed_df = df_clients.hint('SHUFFLE_HASH').join(df_orders, on='client_id', how='inner')
     shuffle_hashed_df.explain(mode="formatted")
     shuffle_hashed_df.show()
-    """
+    
 
-     ## CartesianProduct 
+    ## CartesianProductJoin
     cartesian_product_join_df  = df_clients.hint('SHUFFLE_REPLICATE_NL').join(df_orders, on='client_id', how='inner')
     cartesian_product_join_df.explain(mode="formatted")
     cartesian_product_join_df.show()
 
+    spark.conf.set("spark.sql.crossJoin.enabled", True)
+    broadcast_nested_loop_join_df  = df_clients.hint("BROADCAST").join(df_orders)
+    broadcast_nested_loop_join_df.explain(mode="formatted")
+    broadcast_nested_loop_join_df.show()
+    
 
     import time
     time.sleep(300)
