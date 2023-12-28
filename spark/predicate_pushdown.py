@@ -22,8 +22,4 @@ if __name__ == "__main__":
         .filter("age > 25").select("name", "job_title")
     df_with_pd.explain(mode="extended")  
 
-    
-    # enable p
-    import time 
-    time.sleep(120)
     spark.stop()
